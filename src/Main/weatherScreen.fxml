@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Hyperlink?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+
+<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+  <columnConstraints>
+      <ColumnConstraints hgrow="SOMETIMES" maxWidth="101.0" minWidth="8.0" prefWidth="8.0" />
+      <ColumnConstraints hgrow="SOMETIMES" maxWidth="202.0" minWidth="10.0" prefWidth="202.0" />
+      <ColumnConstraints hgrow="SOMETIMES" maxWidth="134.0" minWidth="10.0" prefWidth="131.0" />
+      <ColumnConstraints hgrow="SOMETIMES" maxWidth="266.0" minWidth="10.0" prefWidth="238.0" />
+      <ColumnConstraints hgrow="SOMETIMES" maxWidth="186.0" minWidth="10.0" prefWidth="77.0" />
+    <ColumnConstraints hgrow="SOMETIMES" maxWidth="232.0" minWidth="108.0" prefWidth="193.0" />
+      <ColumnConstraints hgrow="SOMETIMES" maxWidth="111.0" minWidth="0.0" prefWidth="3.0" />
+  </columnConstraints>
+  <rowConstraints>
+      <RowConstraints maxHeight="425.0" minHeight="10.0" prefHeight="418.0" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="425.0" minHeight="10.0" prefHeight="418.0" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="425.0" minHeight="10.0" prefHeight="418.0" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="425.0" minHeight="10.0" prefHeight="418.0" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="425.0" minHeight="10.0" prefHeight="418.0" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="-Infinity" minHeight="1.0" prefHeight="1.0" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="425.0" minHeight="0.0" prefHeight="12.0" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="425.0" minHeight="10.0" prefHeight="33.0" vgrow="SOMETIMES" />
+    <RowConstraints maxHeight="-Infinity" minHeight="25.0" prefHeight="25.0" vgrow="SOMETIMES" />
+  </rowConstraints>
+   <children>
+      <Label id="directoryLabel" prefHeight="17.0" prefWidth="260.0" text="Choose directory path..." GridPane.columnIndex="1" GridPane.columnSpan="2" />
+      <Button id="directoryButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="25.0" prefWidth="119.0" text="Directory Chooser" GridPane.columnIndex="3" GridPane.halignment="CENTER" />
+      <Label text="Start Date:" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+      <Label text="End Date:" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+      <ImageView fitHeight="151.0" fitWidth="199.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.rowSpan="2" GridPane.valignment="CENTER">
+         <image>
+            <Image url="@transnet_logo.jpg" />
+         </image>
+      </ImageView>
+      <Button id="generateButton" mnemonicParsing="false" prefHeight="38.0" prefWidth="89.0" text="Generate" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.rowIndex="4" />
+      <HBox prefHeight="44.0" prefWidth="130.0" GridPane.columnIndex="1" GridPane.columnSpan="4" GridPane.rowIndex="8">
+         <children>
+            <ImageView fitHeight="75.0" fitWidth="21.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@logo.png" />
+               </image>
+            </ImageView>
+            <Label contentDisplay="CENTER" prefHeight="22.0" prefWidth="249.0" text="Created by Simius Development">
+               <padding>
+                  <Insets left="5.0" />
+               </padding>
+            </Label>
+            <Hyperlink id="link" prefHeight="23.0" prefWidth="344.0" text="https://www.facebook.com/SimiusDev/" />
+         </children>
+      </HBox>
+      <Button id="filterButton" minHeight="25.0" minWidth="121.0" mnemonicParsing="false" text="Filter" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="4" />
+      <Label text="Ship:" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+      <ComboBox id="shipPicker" prefHeight="25.0" prefWidth="121.0" promptText="Select Ship" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="3" />
+      <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+         <children>
+            <ComboBox id="startYearPicker" prefHeight="25.0" prefWidth="121.0" promptText="Year">
+               <VBox.margin>
+                  <Insets bottom="5.0" />
+               </VBox.margin>
+            </ComboBox>
+            <ComboBox id="startMonthPicker" prefHeight="25.0" prefWidth="121.0" promptText="Month" />
+         </children>
+      </VBox>
+      <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="2" GridPane.rowIndex="2">
+         <children>
+            <ComboBox id="endYearPicker" prefHeight="25.0" prefWidth="121.0" promptText="Year">
+               <VBox.margin>
+                  <Insets bottom="5.0" />
+               </VBox.margin>
+            </ComboBox>
+            <ComboBox id="endMonthPicker" prefHeight="25.0" prefWidth="121.0" promptText="Month" />
+         </children>
+      </VBox>
+      <ListView id="listView" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.columnSpan="2" GridPane.rowIndex="1" GridPane.rowSpan="4" />
+      <Button id="backBtn" mnemonicParsing="false" text="Back" GridPane.columnIndex="5" GridPane.halignment="RIGHT" />
+   </children>
+</GridPane>
