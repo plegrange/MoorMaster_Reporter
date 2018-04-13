@@ -15,6 +15,7 @@ import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
 
 import java.io.*;
+import java.util.List;
 
 public class EnergyController {
     private Button backButton;
@@ -28,6 +29,7 @@ public class EnergyController {
     private FileReader fileReader;
     private DirectoryChooser directoryChooser;
     private TableManager tableManager;
+    private OutputManager outputManager;
     Parent password = null, rate = null;
     Scene passwordScene, rateScene;
     private TextField winterTxt, summerTxt;
@@ -160,6 +162,16 @@ public class EnergyController {
 
             }
         });
+        generateButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                outputManager = new OutputManager();
+                List<Month> months = (List<Month>) tableView.getItems();
+                String startDate = startMonthPicker.getValue() + "_" + startYearPicker.getValue();
+                String endDate = endMonthPicker.getValue() + "_" + endYearPicker.getValue();
+                outputManager.generateReport(months, primaryStage, startDate, endDate);
+            }
+        });
         //buildComboBoxes();
         yearCol = (TableColumn) tableView.getColumns().get(0);
         monthCol = (TableColumn) tableView.getColumns().get(1);
@@ -184,6 +196,11 @@ public class EnergyController {
         PoNCostCol.setCellValueFactory(new PropertyValueFactory<Month, String>("PoNCost"));
 
         linkCells();
+    }
+
+    private void accumulateValues(){
+        List<Month> months = (List<Month>) tableView.getItems();
+
     }
 
     private void linkCells() {

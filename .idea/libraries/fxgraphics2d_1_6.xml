@@ -1,0 +1,20 @@
+<component name="libraryTable">
+  <library name="fxgraphics2d-1.6">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/fxgraphics2d-1.6.jar!/" />
+      <root url="jar://$PROJECT_DIR$/google-collections-1.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/jfreechart-1.5.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/jfreechart-fx-1.0.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/jfreesvg-3.3.jar!/" />
+      <root url="jar://$PROJECT_DIR$/jsr305-2.0.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/orson-charts-fx-1.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/orsoncharts-1.7.jar!/" />
+      <root url="jar://$PROJECT_DIR$/orsonpdf-1.7.jar!/" />
+      <root url="jar://$PROJECT_DIR$/qdox-2.0-M7.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$PROJECT_DIR$/jsr305-2.0.1.jar!/" />
+    </SOURCES>
+  </library>
+</component>

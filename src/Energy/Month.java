@@ -5,6 +5,7 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class Month {
@@ -45,17 +46,35 @@ public class Month {
     }
 
     public void update(double winterRate, double summerRate) {
-        if(rate == -1.0) {
+        if (rate == -1.0) {
             rate = getRate(winterRate, summerRate);
         }
-        comboCost.set(String.valueOf(Double.valueOf(combokWh.get()) * rate));
-        TPTCost.set(String.valueOf(Double.valueOf(TPTkWh.get()) * rate));
-        AMSCost.set(String.valueOf(Double.valueOf(AMSkWh.get()) * rate));
-        PoNCost.set(String.valueOf(
+        comboCost.set(roundValue(String.valueOf(Double.valueOf(combokWh.get()) * rate)));
+        TPTCost.set(roundValue(String.valueOf(Double.valueOf(TPTkWh.get()) * rate)));
+        AMSCost.set(roundValue(String.valueOf(Double.valueOf(AMSkWh.get()) * rate)));
+        PoNCost.set(roundValue(String.valueOf(
                 Double.valueOf(comboCost.get())
                         - Double.valueOf(TPTCost.get())
                         - Double.valueOf(AMSCost.get())
-                        - Double.valueOf(maxDemand.get())));
+                        - Double.valueOf(maxDemand.get()))));
+        PoNkWh.set(roundValue(String.valueOf(Double.valueOf(PoNCost.get()) / rate)));
+    }
+
+    public List<String> getAttributes() {
+        List<String> attributes = new ArrayList<>();
+        Collections.addAll(attributes,
+                month.get() + "_" + year.get(),
+                combokWh.get(),
+                comboCost.get(),
+                TPTkWh.get(),
+                TPTCost.get(),
+                AMSkWh.get(),
+                AMSCost.get(),
+                maxDemand.get(),
+                berthMonthTotal.get(),
+                PoNkWh.get(),
+                PoNCost.get());
+        return attributes;
     }
 
     public void addShip(Ship newShip) {
@@ -87,7 +106,7 @@ public class Month {
     }
 
     public void setCombokWh(String combokWh) {
-        this.combokWh.set(combokWh);
+        this.combokWh.set(roundValue(combokWh));
     }
 
     public String getTPTkWh() {
@@ -99,7 +118,12 @@ public class Month {
     }
 
     public void setTPTkWh(String TPTkWh) {
-        this.TPTkWh.set(TPTkWh);
+        this.TPTkWh.set(roundValue(TPTkWh));
+    }
+
+    private String roundValue(String value) {
+        double roundedValue = Math.round(Double.valueOf(value) * 100.0) / 100.0;
+        return String.valueOf(roundedValue);
     }
 
     public String getAMSkWh() {
@@ -111,7 +135,7 @@ public class Month {
     }
 
     public void setAMSkWh(String AMSkWh) {
-        this.AMSkWh.set(AMSkWh);
+        this.AMSkWh.set(roundValue(AMSkWh));
     }
 
     public String getComboCost() {
@@ -159,7 +183,7 @@ public class Month {
     }
 
     public void setMaxDemand(String maxDemand) {
-        this.maxDemand.set(maxDemand);
+        this.maxDemand.set(roundValue(maxDemand));
     }
 
     public String getPoNCost() {
