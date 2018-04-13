@@ -75,7 +75,7 @@
             <Hyperlink id="link" prefHeight="23.0" prefWidth="344.0" text="https://www.facebook.com/SimiusDev/" />
          </children>
       </HBox>
-      <Button id="checkBtn" mnemonicParsing="false" text="Filter" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
+      <Button id="filterBtn" mnemonicParsing="false" text="Filter" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
       <TableView id="table" editable="true" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.columnSpan="5" GridPane.rowIndex="3" GridPane.rowSpan="6">
         <columns>
           <TableColumn id="yearCol" text="Year" />

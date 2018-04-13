@@ -1,5 +1,8 @@
 package Energy;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.util.ArrayList;
@@ -17,14 +20,12 @@ public class FileReader {
         selectedDirectory = directory;
         shipFiles = new ArrayList<>();
         for (File file : selectedDirectory.listFiles()) {
-
-            //filter files
             readFile(file);
         }
         temp = cloneList(shipFiles);
         groupShipsByMonth();
         shipFiles = cloneList(temp);
-        filtered = months;
+        //filtered = months;
         temp = new ArrayList<>();
     }
     private void readFile(File file) {
@@ -61,5 +62,40 @@ public class FileReader {
         } catch (java.io.IOException e) {
             e.printStackTrace();
         }
+    }
+    private List<Ship> cloneList(List<Ship> oldList) {
+        List<Ship> newList = new ArrayList<>();
+        for (Ship shipFile : oldList) {
+            newList.add(shipFile);
+        }
+        return newList;
+    }
+    private void groupShipsByMonth() {
+        months = new ArrayList<>();
+        boolean[] indexes;
+        Month newMonth;
+        while (shipFiles.size() > 0) {
+            Ship ship = shipFiles.get(0);
+            newMonth = new Month(ship.getMonth(), ship.getYear());
+            newMonth.addShip(ship);
+            indexes = new boolean[shipFiles.size()];
+            for (int i = 1; i < shipFiles.size(); i++) {
+
+                if (ship.equals(shipFiles.get(i))) {
+                    indexes[i] = true;
+                } else indexes[i] = false;
+            }
+            for (int i = shipFiles.size() - 1; i > 0; i--) {
+                if (indexes[i]) {
+                    newMonth.addShip(shipFiles.remove(i));
+                }
+            }
+            shipFiles.remove(0);
+            months.add(newMonth);
+        }
+    }
+
+    public ObservableList<Month> getObservableList(){
+        return FXCollections.observableArrayList(months);
     }
 }

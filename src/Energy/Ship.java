@@ -2,10 +2,10 @@ package Energy;
 
 public class Ship {
 
-    public String shipName;
+    private String shipName;
     private String dateMoored;
-    public int durationHours, durationMinutes, durationSeconds;
-    public String month, year;
+    private int durationHours, durationMinutes, durationSeconds;
+    private String month, year;
 
     public Ship(String shipName, String dateString, String durationString) {
         StringBuilder sb = new StringBuilder(shipName);
@@ -54,5 +54,29 @@ public class Ship {
 
     public String getDateMoored() {
         return dateMoored;
+    }
+
+    public String getShipName() {
+        return shipName;
+    }
+
+    public int getDurationHours() {
+        return durationHours;
+    }
+
+    public int getDurationMinutes() {
+        return durationMinutes;
+    }
+
+    public int getDurationSeconds() {
+        return durationSeconds;
+    }
+
+    public String getMonth() {
+        return month;
+    }
+
+    public String getYear() {
+        return year;
     }
 }
