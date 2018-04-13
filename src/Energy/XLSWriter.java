@@ -56,7 +56,7 @@ public class XLSWriter {
             workbook.write();
             workbook.setProtected(true);
             workbook.close();
-            Desktop.getDesktop().open(file);
+            //Desktop.getDesktop().open(file);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -64,10 +64,20 @@ public class XLSWriter {
 
     private void writeToSheet(String[][] data, String sheetName, int sheet) throws WriteException {
         workbook.createSheet(sheetName, sheet);
-        for (int col = 0; col < data.length; col++) {
-            addLabel(workbook.getSheet(sheet), col, 0, data[col][0]);
-            for (int row = 1; row < data[0].length; row++) {
-                addString(workbook.getSheet(sheet), col, row, data[col][row]);
+        for (int col = 0; col < data[0].length; col++) {
+            addLabel(workbook.getSheet(sheet), col, 0, data[0][col]);
+        }
+        for (int row = 1; row < data.length; row++) {
+            addLabel(workbook.getSheet(sheet), 0, row, data[row][0]);
+        }
+        for (int col = 1; col < data[0].length; col++) {
+            for (int row = 1; row < data.length; row++) {
+                if (data[row][col] != null)
+                    try {
+                        addNumber(workbook.getSheet(sheet), col, row, Math.round(Double.valueOf(data[row][col]) * 100.0) / 100.0);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
             }
         }
         sheetAutoFitColumns(workbook.getSheet(sheet));

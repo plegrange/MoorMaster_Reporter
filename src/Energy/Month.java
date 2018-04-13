@@ -77,6 +77,34 @@ public class Month {
         return attributes;
     }
 
+    int hours, minutes, seconds;
+
+    public void calculateTotalMonthHours() {
+        hours = 0;
+        minutes = 0;
+        seconds = 0;
+
+        for (Ship shipFile : ships)
+            addShipToTotal(shipFile);
+
+        minutes += seconds / 60;
+        seconds = seconds % 60;
+        hours += minutes / 60;
+        minutes = minutes % 60;
+
+        double secondsInMinutes = seconds * 1.0 / 60.0;
+        double tempMinutes = minutes * 1.0 + secondsInMinutes;
+        double minutesInHours = tempMinutes / 60.0;
+        double tempHours = hours * 1.0 + minutesInHours;
+        berthMonthTotal.set(String.valueOf(tempHours));
+    }
+
+    private void addShipToTotal(Ship shipFile) {
+        hours += shipFile.getDurationHours();
+        minutes += shipFile.getDurationMinutes();
+        seconds += shipFile.getDurationSeconds();
+    }
+
     public void addShip(Ship newShip) {
         ships.add(newShip);
     }

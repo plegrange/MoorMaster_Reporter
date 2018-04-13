@@ -13,8 +13,22 @@ public class TableManager {
         List<Month> filteredList = new ArrayList<>();
         for (Month month : list) {
             if (Integer.valueOf(month.getYear()) == startYear) {
-                if(getIndex(month.getMonth())>= getIndex(startMonth)){
-                    if()
+                if (getIndex(month.getMonth()) >= getIndex(startMonth)) {
+                    if (Integer.valueOf(month.getYear()) < endYear) {
+                        filteredList.add(month);
+                    } else if (Integer.valueOf(month.getYear()) == endYear) {
+                        if (getIndex(month.getMonth()) <= getIndex(endMonth)) {
+                            filteredList.add(month);
+                        }
+                    }
+                }
+            } else if (Integer.valueOf(month.getYear()) > startYear) {
+                if (Integer.valueOf(month.getYear()) < endYear) {
+                    filteredList.add(month);
+                } else if (Integer.valueOf(month.getYear()) == endYear) {
+                    if (getIndex(month.getMonth()) <= getIndex(endMonth)) {
+                        filteredList.add(month);
+                    }
                 }
             }
         }
