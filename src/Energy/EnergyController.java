@@ -39,6 +39,7 @@ public class EnergyController {
     public void connectToUI(Stage primaryStage, Scene mainScene) {
         tableManager = new TableManager();
         this.mainScene = mainScene;
+        feedback = (Label) primaryStage.getScene().lookup("#feedback");
         backButton = (Button) primaryStage.getScene().lookup("#backBtn");
         backButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -170,6 +171,7 @@ public class EnergyController {
                 String startDate = startMonthPicker.getValue() + "_" + startYearPicker.getValue();
                 String endDate = endMonthPicker.getValue() + "_" + endYearPicker.getValue();
                 outputManager.generateReport(months, primaryStage, startDate, endDate);
+                feedback.setText("Report Generated.");
             }
         });
         //buildComboBoxes();
@@ -198,7 +200,7 @@ public class EnergyController {
         linkCells();
     }
 
-    private void accumulateValues(){
+    private void accumulateValues() {
         List<Month> months = (List<Month>) tableView.getItems();
 
     }

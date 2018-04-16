@@ -8,6 +8,7 @@ import javafx.stage.Stage;
 import javafx.util.Pair;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.fx.ChartViewer;
+import org.jfree.data.general.DefaultPieDataset;
 
 import java.awt.*;
 import java.io.File;
@@ -99,6 +100,38 @@ public class OutputManager {
         chartGenerator.resetData();
 
         //Chart 5
+        DefaultPieDataset pieDataset = new DefaultPieDataset();
+        double sumAMS = 0.0, sumPoN = 0.0, sumCombo = 0.0;
+        for (Month m : months) {
+            sumAMS = sumAMS + Double.valueOf(m.getAMSkWh());
+            sumPoN = sumPoN + Double.valueOf(m.getPoNkWh());
+            sumCombo = sumCombo + Double.valueOf(m.getCombokWh());
+        }
+        String subtitle = months.get(0).getMonth() + " " + months.get(0).getYear() +
+                " - " + months.get(months.size() - 1).getMonth() + " " + months.get(months.size() - 1).getYear();
+        pieDataset.setValue("Total AMS Usage (kWh) - " + round(sumAMS / (sumAMS + sumCombo + sumPoN) * 100.0) + "%", sumAMS);
+        pieDataset.setValue("Total PoN Usage(kWh) - " + round(sumPoN / (sumAMS + sumCombo + sumPoN) * 100.0) + "%", sumPoN);
+        pieDataset.setValue("Total Combo Usage(kWh) - " + round(sumCombo / (sumAMS + sumCombo + sumPoN) * 100.0) + "%", sumCombo);
+        chart = chartGenerator.createPieChart("Total Energy Usage", subtitle, pieDataset);
+        amendPDFDoc(700, 400, chart);
+
+        //Chart 6
+        pieDataset = new DefaultPieDataset();
+        sumAMS = 0.0;
+        sumPoN = 0.0;
+        sumCombo = 0.0;
+        for (Month m : months) {
+            sumAMS = sumAMS + Double.valueOf(m.getAMSCost());
+            sumPoN = sumPoN + Double.valueOf(m.getPoNCost());
+            sumCombo = sumCombo + Double.valueOf(m.getComboCost());
+        }
+        subtitle = months.get(0).getMonth() + " " + months.get(0).getYear() +
+                " - " + months.get(months.size() - 1).getMonth() + " " + months.get(months.size() - 1).getYear();
+        pieDataset.setValue("Total AMS Cost (Rands) - " + round(sumAMS / (sumAMS + sumCombo + sumPoN) * 100.0) + "%", sumAMS);
+        pieDataset.setValue("Total PoN Cost(Rands) - " + round(sumPoN / (sumAMS + sumCombo + sumPoN) * 100.0) + "%", sumPoN);
+        pieDataset.setValue("Total Combo Cost (Rands) - " + round(sumCombo / (sumAMS + sumCombo + sumPoN) * 100.0) + "%", sumCombo);
+        chart = chartGenerator.createPieChart("Total Energy Cost", subtitle, pieDataset);
+        amendPDFDoc(700, 400, chart);
 
         writePDFDoc("Report_" + months.get(0).getMonth() + "_" +
                 months.get(0).getYear() + "-" +
@@ -107,6 +140,10 @@ public class OutputManager {
 
         xlsWriter = new XLSWriter();
         xlsWriter.writeWorkbook(months, buildTables(months));
+    }
+
+    private double round(double val) {
+        return (Math.round(val * 100.0)) / 100.0;
     }
 
     private List<Pair<String, String[][]>> buildTables(List<Month> months) {
