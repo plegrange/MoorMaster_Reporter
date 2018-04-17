@@ -50,9 +50,8 @@ public class XLSWriter {
             cv.setFormat(times);
             cv.setFormat(timesBoldUnderline);
             cv.setAutosize(true);
-            for (int s = 0; s < sheets.size(); s++) {
-                writeToSheet(sheets.get(s).getValue(), sheets.get(s).getKey(), s);
-            }
+            writeToSheet(sheets.get(0).getValue(), sheets.get(0).getKey(), 0);
+            writeToShipSheet(sheets.get(1).getValue(), sheets.get(1).getKey(), 1);
             workbook.write();
             workbook.setProtected(true);
             workbook.close();
@@ -60,6 +59,27 @@ public class XLSWriter {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private void writeToShipSheet(String[][] data, String sheetName, int sheet) throws WriteException {
+        workbook.createSheet(sheetName, sheet);
+        for (int col = 0; col < data[0].length; col++) {
+            addLabel(workbook.getSheet(sheet), col, 0, data[0][col]);
+        }
+        for (int row = 1; row < data.length; row++) {
+            addLabel(workbook.getSheet(sheet), 0, row, data[row][0]);
+        }
+        for (int col = 1; col < data[0].length; col++) {
+            for (int row = 1; row < data.length; row++) {
+                if (data[row][col] != null)
+                    try {
+                        addString(workbook.getSheet(sheet), col, row, data[row][col]);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+            }
+        }
+        sheetAutoFitColumns(workbook.getSheet(sheet));
     }
 
     private void writeToSheet(String[][] data, String sheetName, int sheet) throws WriteException {

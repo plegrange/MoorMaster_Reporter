@@ -66,7 +66,7 @@
             <Hyperlink id="link" prefHeight="23.0" prefWidth="344.0" text="https://www.facebook.com/SimiusDev/" />
          </children>
       </HBox>
-      <Button id="filterButton" minHeight="25.0" minWidth="121.0" mnemonicParsing="false" text="Filter" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="4" />
+      <Button id="filterDateButton" minHeight="25.0" minWidth="121.0" mnemonicParsing="false" text="Filter By Date" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="4" />
       <Label text="Ship:" GridPane.columnIndex="1" GridPane.rowIndex="3" />
       <ComboBox id="shipPicker" prefHeight="25.0" prefWidth="121.0" promptText="Select Ship" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="3" />
       <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
@@ -91,5 +91,6 @@
       </VBox>
       <ListView id="listView" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.columnSpan="2" GridPane.rowIndex="1" GridPane.rowSpan="4" />
       <Button id="backBtn" mnemonicParsing="false" text="Back" GridPane.columnIndex="5" GridPane.halignment="RIGHT" />
+      <Button id="filterShipButton" mnemonicParsing="false" text="Filter By Ship" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="4" />
    </children>
 </GridPane>

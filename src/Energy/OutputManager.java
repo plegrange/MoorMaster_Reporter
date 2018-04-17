@@ -109,9 +109,9 @@ public class OutputManager {
         }
         String subtitle = months.get(0).getMonth() + " " + months.get(0).getYear() +
                 " - " + months.get(months.size() - 1).getMonth() + " " + months.get(months.size() - 1).getYear();
-        pieDataset.setValue("Total AMS Usage (kWh) - " + round(sumAMS / (sumAMS + sumCombo + sumPoN) * 100.0) + "%", sumAMS);
-        pieDataset.setValue("Total PoN Usage(kWh) - " + round(sumPoN / (sumAMS + sumCombo + sumPoN) * 100.0) + "%", sumPoN);
-        pieDataset.setValue("Total Combo Usage(kWh) - " + round(sumCombo / (sumAMS + sumCombo + sumPoN) * 100.0) + "%", sumCombo);
+        pieDataset.setValue("Total AMS Usage (kWh) - " + round(sumAMS), sumAMS);
+        pieDataset.setValue("Total PoN Usage(kWh) - " + round(sumPoN), sumPoN);
+        pieDataset.setValue("Total Combo Usage(kWh) - " + round(sumCombo), sumCombo);
         chart = chartGenerator.createPieChart("Total Energy Usage", subtitle, pieDataset);
         amendPDFDoc(700, 400, chart);
 
@@ -127,10 +127,26 @@ public class OutputManager {
         }
         subtitle = months.get(0).getMonth() + " " + months.get(0).getYear() +
                 " - " + months.get(months.size() - 1).getMonth() + " " + months.get(months.size() - 1).getYear();
-        pieDataset.setValue("Total AMS Cost (Rands) - " + round(sumAMS / (sumAMS + sumCombo + sumPoN) * 100.0) + "%", sumAMS);
-        pieDataset.setValue("Total PoN Cost(Rands) - " + round(sumPoN / (sumAMS + sumCombo + sumPoN) * 100.0) + "%", sumPoN);
-        pieDataset.setValue("Total Combo Cost (Rands) - " + round(sumCombo / (sumAMS + sumCombo + sumPoN) * 100.0) + "%", sumCombo);
+        pieDataset.setValue("Total AMS Cost (Rands) - " + round(sumAMS), sumAMS);
+        pieDataset.setValue("Total PoN Cost(Rands) - " + round(sumPoN), sumPoN);
+        pieDataset.setValue("Total Combo Cost (Rands) - " + round(sumCombo), sumCombo);
         chart = chartGenerator.createPieChart("Total Energy Cost", subtitle, pieDataset);
+        amendPDFDoc(700, 400, chart);
+
+        //Chart 7
+        pieDataset = new DefaultPieDataset();
+
+        for (Month m : months) {
+            sumAMS = sumAMS + Double.valueOf(m.getAMSkWh());
+            sumPoN = sumPoN + Double.valueOf(m.getPoNkWh());
+            sumCombo = sumCombo + Double.valueOf(m.getCombokWh());
+        }
+        subtitle = months.get(0).getMonth() + " " + months.get(0).getYear() +
+                " - " + months.get(months.size() - 1).getMonth() + " " + months.get(months.size() - 1).getYear();
+        pieDataset.setValue("Total AMS Usage (%) - " + round(sumAMS / (sumAMS + sumCombo + sumPoN) * 100.0) + "%", sumAMS);
+        pieDataset.setValue("Total PoN Usage(%) - " + round(sumPoN / (sumAMS + sumCombo + sumPoN) * 100.0) + "%", sumPoN);
+        pieDataset.setValue("Total Combo Usage(%) - " + round(sumCombo / (sumAMS + sumCombo + sumPoN) * 100.0) + "%", sumCombo);
+        chart = chartGenerator.createPieChart("Total Energy Usage", subtitle, pieDataset);
         amendPDFDoc(700, 400, chart);
 
         writePDFDoc("Report_" + months.get(0).getMonth() + "_" +
@@ -149,7 +165,29 @@ public class OutputManager {
     private List<Pair<String, String[][]>> buildTables(List<Month> months) {
         List<Pair<String, String[][]>> tables = new ArrayList<>();
         tables.add(buildCumulativeTable(months));
+        tables.add(buildShipListTable(months));
         return tables;
+    }
+
+    private Pair<String, String[][]> buildShipListTable(List<Month> months) {
+        List<Ship> ships = new ArrayList<>();
+        for (Month m : months) {
+            for (Ship s : m.ships) {
+                ships.add(s);
+            }
+        }
+
+        String[][] shipsTable = new String[ships.size() + 1][3];
+
+        shipsTable[0][0] = "Ship Name";
+        shipsTable[0][1] = "Date Moored";
+        shipsTable[0][2] = "Duration";
+        for (int i = 0; i < ships.size(); i++) {
+            shipsTable[i+1][0] = ships.get(i).getShipName();
+            shipsTable[i+1][1] = ships.get(i).getDateMoored();
+            shipsTable[i+1][2] = ships.get(i).getDurationHours() + "h " + ships.get(i).getDurationMinutes() + "m " + ships.get(i).getDurationSeconds();
+        }
+        return new Pair<>("Ships List", shipsTable);
     }
 
     private Pair<String, String[][]> buildCumulativeTable(List<Month> months) {
