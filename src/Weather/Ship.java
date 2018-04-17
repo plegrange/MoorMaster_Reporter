@@ -69,12 +69,12 @@ public class Ship {
         String[] startEntry = entries.get(0);
         String[] endEntry = entries.get(entries.size() - 1);
         startDate = startEntry[0];
-        startTime = endEntry[1];
-        endDate = startEntry[0];
+        startTime = startEntry[1];
+        endDate = endEntry[0];
         endTime = endEntry[1];
 
-        windSpeedStart = Double.valueOf(startEntry[2]);
-        windSpeedEnd = Double.valueOf(endEntry[2]);
+        windSpeedStart = convertToBeaufort(Math.round(Float.valueOf(startEntry[2])));
+        windSpeedEnd = convertToBeaufort(Math.round(Float.valueOf(endEntry[2])));
 
         //windSpeedAverage = getAverage(entries, 2);
 
@@ -97,22 +97,53 @@ public class Ship {
         calculateAverages(entries);
     }
 
+    private double convertToBeaufort(int knots) {
+        double beaufort;
+        if (knots == 1)
+            beaufort = 0.1;
+        else if (knots > 1 && knots <= 3) {
+            beaufort = 1;
+        } else if (knots >= 4 && knots <= 6)
+            beaufort = 2;
+        else if (knots >= 7 && knots <= 10)
+            beaufort = 3;
+        else if (knots >= 11 && knots <= 15)
+            beaufort = 4;
+        else if (knots >= 16 && knots <= 21)
+            beaufort = 5;
+        else if (knots >= 22 && knots <= 27)
+            beaufort = 6;
+        else if (knots >= 28 && knots <= 33)
+            beaufort = 7;
+        else if (knots >= 34 && knots <= 40)
+            beaufort = 8;
+        else if (knots >= 41 && knots <= 47)
+            beaufort = 9;
+        else if (knots >= 48 && knots <= 55)
+            beaufort = 10;
+        else if (knots >= 56 && knots <= 63)
+            beaufort = 11;
+        else if (knots >= 64)
+            beaufort = 12;
+        else beaufort = 0;
+        return beaufort;
+    }
+
     private void calculateAverages(List<String[]> entries) {
         double totalWind = 0.0, totalHSLong = 0.0, totalTPLong = 0.0, totalHSSwell = 0.0, totalTPSwell = 0.0;
         String[] splitTime;
         int hour = -1;
         for (String[] entry : entries) {
 
-            totalWind = totalWind + Double.valueOf(entry[2]);
+            totalWind = totalWind + convertToBeaufort(Math.round(Float.valueOf(entry[2])));
             totalHSLong = totalHSLong + (Double.valueOf(entry[6]) + Double.valueOf(entry[12])) / 2.0;
             totalTPLong = totalTPLong + (Double.valueOf(entry[7]) + Double.valueOf(entry[13])) / 2.0;
             totalHSSwell = totalHSSwell + (Double.valueOf(entry[8]) + Double.valueOf(entry[14])) / 2.0;
 
-
             splitTime = entry[1].split(":");
             if (Integer.valueOf(splitTime[0]) != hour) {
                 hour = Integer.valueOf(splitTime[0]);
-                windSpeeds.add(Double.valueOf(entry[2]));
+                windSpeeds.add(convertToBeaufort(Math.round(Float.valueOf(entry[2]))));
                 windDirections.add(round((Double.valueOf(entry[3]) / 360.0) * 12.0));
                 hsLong.add((Double.valueOf(entry[6]) + Double.valueOf(entry[12])) / 2.0);
                 tpLong.add((Double.valueOf(entry[7]) + Double.valueOf(entry[13])) / 2.0);
@@ -123,12 +154,17 @@ public class Ship {
                 //String[] timeOfDay = entry[1].split(" ");
                 String[] time = entry[1].split(":");
 
-                int addPM;
-                if (time[2].endsWith("PM"))
-                    addPM = 12;
-                else
-                    addPM = 0;
-                timeStamps.add(new Date(Integer.valueOf(date[2]), Integer.valueOf(date[1]), Integer.valueOf(date[0]), Integer.valueOf(time[0]) + addPM, Integer.valueOf(time[1])));
+                int addPM = 0;
+                if (time[2].endsWith("PM")) {
+                    if (Integer.valueOf(time[0]) < 12)
+                        addPM = 12;
+                }
+                timeStamps.add(new Date(Integer.valueOf(date[2]),
+                        Integer.valueOf(date[1]) - 1,
+                        Integer.valueOf(date[0]) - 1,
+                        Integer.valueOf(time[0]) + addPM,
+                        Integer.valueOf(time[1]),
+                        Integer.valueOf(time[2].replaceAll("PM", "").replaceAll("AM", ""))));
 
                 totalTPSwell = totalTPSwell + (Double.valueOf(entry[9]) + Double.valueOf(entry[15])) / 2.0;
             }
@@ -166,7 +202,7 @@ public class Ship {
 
     public int getStartDay() {
         String date[] = startDate.split("/");
-        return Integer.valueOf(date[0]);
+        return Integer.valueOf(date[0]) - 1;
     }
 
     public int getEndYear() {
@@ -176,12 +212,12 @@ public class Ship {
 
     public int getEndMonth() {
         String date[] = endDate.split("/");
-        return Integer.valueOf(date[1]);
+        return Integer.valueOf(date[1]) - 1;
     }
 
     public int getStartMonth() {
         String date[] = startDate.split("/");
-        return Integer.valueOf(date[1]);
+        return Integer.valueOf(date[1]) - 1;
     }
 
     public String getName() {

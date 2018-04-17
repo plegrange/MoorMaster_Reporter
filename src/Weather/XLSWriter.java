@@ -13,6 +13,7 @@ import jxl.write.biff.RowsExceededException;
 
 import java.io.File;
 import java.lang.Number;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -66,17 +67,30 @@ public class XLSWriter {
     private void writeShipSheet(Ship ship, int sheet) {
         workbook.createSheet(ship.getName(), sheet);
         try {
-            addString(workbook.getSheet(sheet), 0, 0, "Time stamp");
-            addString(workbook.getSheet(sheet), 1, 0, "Wind speed");
-            addString(workbook.getSheet(sheet), 2, 0, "Wind direction");
+            addLabel(workbook.getSheet(sheet), 0, 0, "Date");
+            addLabel(workbook.getSheet(sheet), 1, 0, "Time");
+            addLabel(workbook.getSheet(sheet), 2, 0, "Wind force");
+            addLabel(workbook.getSheet(sheet), 3, 0, "Wind direction");
+            addLabel(workbook.getSheet(sheet), 4, 0, "HSLong");
+            addLabel(workbook.getSheet(sheet), 5, 0, "TPLong");
+            addLabel(workbook.getSheet(sheet), 6, 0, "HSSwell");
+            addLabel(workbook.getSheet(sheet), 7, 0, "TPSwell");
         } catch (WriteException e) {
             e.printStackTrace();
         }
         for (int i = 0; i < ship.getWindSpeeds().size(); i++) {
             try {
-                addString(workbook.getSheet(sheet), 0, i + 1, ship.getTimeStamps().get(i).toString());
-                addNumber(workbook.getSheet(sheet), 1, i + 1, ship.getWindSpeeds().get(i));
-                addNumber(workbook.getSheet(sheet), 2, i + 1, ship.getWindDirections().get(i));
+                Date timeStamp = ship.getTimeStamps().get(i);
+                String date = timeStamp.getDate() + "/" + timeStamp.getMonth() + "/" + timeStamp.getYear();
+                String time = String.valueOf(timeStamp.getHours()) + "h " + String.valueOf(timeStamp.getMinutes()) + "m " + String.valueOf(timeStamp.getSeconds()) + "s";
+                addString(workbook.getSheet(sheet), 0, i + 1, date);
+                addString(workbook.getSheet(sheet), 1, i + 1, time);
+                addNumber(workbook.getSheet(sheet), 2, i + 1, ship.getWindSpeeds().get(i));
+                addNumber(workbook.getSheet(sheet), 3, i + 1, ship.getWindDirections().get(i));
+                addNumber(workbook.getSheet(sheet), 4, i + 1, ship.getHsLong().get(i));
+                addNumber(workbook.getSheet(sheet), 5, i + 1, ship.getTpLong().get(i));
+                addNumber(workbook.getSheet(sheet), 6, i + 1, ship.getHsSwell().get(i));
+                addNumber(workbook.getSheet(sheet), 7, i + 1, ship.getTpSwell().get(i));
             } catch (WriteException e) {
                 e.printStackTrace();
             }

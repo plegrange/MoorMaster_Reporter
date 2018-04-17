@@ -5,12 +5,15 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
 
 import java.io.File;
+import java.io.IOException;
 
 public class WeatherController {
     private Button backButton, directoryButton, filterDateButton, filterShipButton, generateButton;
@@ -27,10 +30,15 @@ public class WeatherController {
     private OutputManager outputManager;
     private String reportName = "";
     private String option = "ALL", DATE = "DATE", SHIP = "SHIP";
+    private Label feedbackLabel;
+    private Scene waitScene, weatherScene;
+    private Stage secondaryStage;
 
-    public void connectToUI(Stage primaryStage, Scene mainScene) {
+    public void connectToUI(Stage primaryStage, Scene mainScene, Scene waitScene) {
         this.mainScene = mainScene;
-
+        this.waitScene = waitScene;
+        this.weatherScene = primaryStage.getScene();
+        feedbackLabel = (Label) primaryStage.getScene().lookup("#feedbackLabel");
         listManager = new ListManager();
         this.listView = (ListView) primaryStage.getScene().lookup("#listView");
         directoryLabel = (Label) primaryStage.getScene().lookup("#directoryLabel");
@@ -60,7 +68,9 @@ public class WeatherController {
                         reportName = "All.xls";
                         break;
                 }
+                feedbackLabel.setText("Generating reports. Please wait...");
                 outputManager.generateReport(filteredList, reportName);
+                feedbackLabel.setText("Reports Generated!");
             }
         });
         filterDateButton = (Button) primaryStage.getScene().lookup("#filterDateButton");
@@ -80,11 +90,17 @@ public class WeatherController {
                 primaryStage.show();
             }
         });
+
+
         directoryButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
+                primaryStage.hide();
+                primaryStage.setScene(waitScene);
+                primaryStage.show();
                 selectedDirectory = directoryChooser.showDialog(primaryStage);
                 if (selectedDirectory != null) {
+
                     directoryLabel.setText(selectedDirectory.getAbsolutePath());
                     fileReader = new Weather.FileReader(selectedDirectory);
                     mainList = fileReader.getShipsList();
@@ -97,12 +113,16 @@ public class WeatherController {
                             if (empty || item == null || item.getName() == null) {
                                 setText(null);
                             } else {
-                                setText(item.getName());
+                                setText(item.getName() + " | " + item.getStartDate()
+                                        + " - " + item.getEndDate());
                             }
                         }
                     });
                 }
+                primaryStage.hide();
                 buildComboBoxes();
+                primaryStage.setScene(weatherScene);
+                primaryStage.show();
             }
 
         });

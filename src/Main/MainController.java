@@ -28,13 +28,13 @@ public class MainController {
                 try {
                     Parent root = FXMLLoader.load(getClass().getResource("energyScreen.fxml"));
                     primaryStage.setTitle("Energy Reporter");
-                    Scene scene = new Scene(root, 900, 600);
+                    Scene scene = new Scene(root, 900, 400);
                     primaryStage.hide();
                     primaryStage.setScene(scene);
                     primaryStage.centerOnScreen();
                     primaryStage.show();
                     energyController = new EnergyController();
-                    energyController.connectToUI(primaryStage,mainScene);
+                    energyController.connectToUI(primaryStage, mainScene);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -45,14 +45,15 @@ public class MainController {
             public void handle(ActionEvent event) {
                 try {
                     Parent root = FXMLLoader.load(getClass().getResource("weatherScreen.fxml"));
+                    Parent wait = FXMLLoader.load(getClass().getResource("waitScreen.fxml"));
                     primaryStage.setTitle("Weather Reporter");
-                    Scene scene = new Scene(root, 900, 600);
+                    Scene scene = new Scene(root, 900, 400);
                     primaryStage.hide();
                     primaryStage.setScene(scene);
                     primaryStage.centerOnScreen();
                     primaryStage.show();
                     weatherController = new WeatherController();
-                    weatherController.connectToUI(primaryStage,mainScene);
+                    weatherController.connectToUI(primaryStage, mainScene, new Scene(wait, 300, 300));
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

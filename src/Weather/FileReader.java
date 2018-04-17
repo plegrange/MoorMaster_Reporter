@@ -68,7 +68,7 @@ public class FileReader {
                 inputStream.close();
 
                 ships.add(new Ship(entries, file.getName()));
-                System.out.println(file.getName() + " read");
+                //System.out.println(file.getName() + " read");
             }
         } catch (IOException e) {
             e.printStackTrace();
