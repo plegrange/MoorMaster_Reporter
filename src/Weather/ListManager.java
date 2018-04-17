@@ -48,7 +48,7 @@ public class ListManager {
     private int getIndex(String month) {
         for (int m = 0; m < 12; m++) {
             if (months[m] == month) {
-                return m + 1;
+                return m;
             }
         }
         return -1;

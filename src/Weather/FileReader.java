@@ -7,16 +7,34 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 public class FileReader {
     private List<Ship> ships;
+    private Queue<File> directories;
+    public int readFiles;
 
     public FileReader(File directory) {
         ships = new ArrayList<>();
+        //directories = new LinkedList<>();
+        //this.directories.add(directory);
+        readFiles = 0;
         readDirectory(directory);
+    }
+
+    public String readNextDir() {
+        File directory = directories.remove();
+        File[] files = directory.listFiles();
+        for (File file : files) {
+            if (file.isDirectory()) {
+                directories.add(file);
+            } else {
+                readFile(file);
+                readFiles++;
+            }
+        }
+        if (directories.size() == 0) return null;
+        return readFiles + " Files Processed.";
     }
 
     private void readDirectory(File directory) {
@@ -26,6 +44,7 @@ public class FileReader {
                 readDirectory(file);
             } else {
                 readFile(file);
+                readFiles++;
             }
         }
     }

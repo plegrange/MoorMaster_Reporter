@@ -27,6 +27,12 @@ public class Ship {
         calculate(entries);
     }
 
+    public boolean isBefore(Ship other) {
+        if (this.timeStamps.get(0).after(other.timeStamps.get(0)))
+            return false;
+        return true;
+    }
+
     public Object[][][] getWindData() {
         Object[][][] windData = new Object[1][windSpeeds.size()][3];
         for (int i = 0; i < timeStamps.size(); i++) {
@@ -161,7 +167,7 @@ public class Ship {
                 }
                 timeStamps.add(new Date(Integer.valueOf(date[2]),
                         Integer.valueOf(date[1]) - 1,
-                        Integer.valueOf(date[0]) - 1,
+                        Integer.valueOf(date[0]),
                         Integer.valueOf(time[0]) + addPM,
                         Integer.valueOf(time[1]),
                         Integer.valueOf(time[2].replaceAll("PM", "").replaceAll("AM", ""))));

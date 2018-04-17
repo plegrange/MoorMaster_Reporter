@@ -3,17 +3,19 @@ package Weather;
 import Main.MainController;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.concurrent.Service;
+import javafx.concurrent.Task;
+import javafx.concurrent.WorkerStateEvent;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
 
 import java.io.File;
-import java.io.IOException;
+import java.util.Collections;
+import java.util.Comparator;
 
 public class WeatherController {
     private Button backButton, directoryButton, filterDateButton, filterShipButton, generateButton;
@@ -92,39 +94,70 @@ public class WeatherController {
         });
 
 
+        Label waitFeedbackLabel = (Label) waitScene.lookup("#feedbackLabel");
         directoryButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
+                Service<FileReader> service = new Service<FileReader>() {
+                    @Override
+                    protected Task<FileReader> createTask() {
+
+                        return new Task<FileReader>() {
+                            @Override
+                            protected FileReader call() throws Exception {
+                                return new FileReader(selectedDirectory);
+                            }
+                        };
+                    }
+
+                };
+                //waitFeedbackLabel.textProperty().bind(service.valueProperty());
+                //waitFeedbackLabel.textProperty().bind(service.valueProperty().get().readFiles);
                 primaryStage.hide();
                 primaryStage.setScene(waitScene);
                 primaryStage.show();
                 selectedDirectory = directoryChooser.showDialog(primaryStage);
                 if (selectedDirectory != null) {
-
                     directoryLabel.setText(selectedDirectory.getAbsolutePath());
-                    fileReader = new Weather.FileReader(selectedDirectory);
-                    mainList = fileReader.getShipsList();
-                    filteredList = mainList;
-                    listView.setItems(mainList);
-                    listView.setCellFactory(param -> new ListCell<Ship>() {
+                    //fileReader = new FileReader(selectedDirectory);
+                    service.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
                         @Override
-                        protected void updateItem(Ship item, boolean empty) {
-                            super.updateItem(item, empty);
-                            if (empty || item == null || item.getName() == null) {
-                                setText(null);
-                            } else {
-                                setText(item.getName() + " | " + item.getStartDate()
-                                        + " - " + item.getEndDate());
-                            }
+                        public void handle(WorkerStateEvent event) {
+                            fileReader = service.getValue();
+                            mainList = fileReader.getShipsList();
+                            filteredList = mainList;
+                            Collections.sort(filteredList, new Comparator<Ship>() {
+                                @Override
+                                public int compare(Ship o1, Ship o2) {
+                                    if (o1.isBefore(o2))
+                                        return -1;
+                                    else if (o2.isBefore(o1))
+                                        return 1;
+                                    else return 0;
+                                }
+                            });
+                            listView.setItems(filteredList);
+                            listView.setCellFactory(param -> new ListCell<Ship>() {
+                                @Override
+                                protected void updateItem(Ship item, boolean empty) {
+                                    super.updateItem(item, empty);
+                                    if (empty || item == null || item.getName() == null) {
+                                        setText(null);
+                                    } else {
+                                        setText(item.getName() + " | " + item.getStartDate()
+                                                + " - " + item.getEndDate());
+                                    }
+                                }
+                            });
+                            primaryStage.hide();
+                            buildComboBoxes();
+                            primaryStage.setScene(weatherScene);
+                            primaryStage.show();
                         }
                     });
+                    service.start();
                 }
-                primaryStage.hide();
-                buildComboBoxes();
-                primaryStage.setScene(weatherScene);
-                primaryStage.show();
             }
-
         });
         filterDateButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -133,6 +166,14 @@ public class WeatherController {
                         , (startMonthPicker.getValue()), (endMonthPicker.getValue()));
                 listView.setItems(filteredList);
                 option = DATE;
+                Collections.sort(filteredList, new Comparator<Ship>() {
+                    @Override
+                    public int compare(Ship o1, Ship o2) {
+                        if (o1.isBefore(o2))
+                            return 1;
+                        return -1;
+                    }
+                });
             }
         });
         filterShipButton.setOnAction(new EventHandler<ActionEvent>() {
@@ -142,6 +183,14 @@ public class WeatherController {
                 listView.setItems(filteredList);
 
                 option = SHIP;
+                Collections.sort(filteredList, new Comparator<Ship>() {
+                    @Override
+                    public int compare(Ship o1, Ship o2) {
+                        if (o1.isBefore(o2))
+                            return 1;
+                        return -1;
+                    }
+                });
             }
         });
     }
