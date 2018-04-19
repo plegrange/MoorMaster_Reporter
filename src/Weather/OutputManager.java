@@ -31,7 +31,7 @@ public class OutputManager {
     public void generateReport(ObservableList<Ship> ships, String reportTitle) {
         xlsWriter = new XLSWriter();
         xlsWriter.writeWorkbook(ships, reportTitle);
-        createWeatherPlots(ships);
+        createWeatherPlots(ships, reportTitle);
     }
 
     private class Month {
@@ -104,7 +104,7 @@ public class OutputManager {
                     for (int i = 0; i < dates.size(); i++) {
                         Date date = dates.get(i);
                         if (m.isSameMonth(new Month(date.getMonth(), date.getYear()))) {
-                            if (date.getDate()+1 == day) {
+                            if (date.getDate() + 1 == day) {
                                 hsLongTotal = hsLongTotal + ship.getHsLong().get(i);
                                 tpLongTotal = tpLongTotal + ship.getTpLong().get(i);
                                 hsSwellTotal = hsSwellTotal + ship.getHsSwell().get(i);
@@ -173,9 +173,9 @@ public class OutputManager {
         return months;
     }
 
-    private void createWeatherPlots(List<Ship> ships) {
+    private void createWeatherPlots(List<Ship> ships, String reportTitle) {
 
-        createPDFDoc("Report", "MoorMaster Reporter");
+        createPDFDoc(reportTitle, "MoorMaster Reporter");
         chartGenerator = new ChartGenerator();
         Object[][][] windDataSet;
         List<String> seriesKeys;
@@ -187,13 +187,14 @@ public class OutputManager {
             chart = chartGenerator.createWindChart(ship.getName(), "Hour", "Wind Force (Beaufort-Scale : 1-12)", new DefaultWindDataset(seriesKeys, windDataSet));
             chart.addSubtitle(new TextTitle(ship.getStartDate() + " - " + ship.getEndDate()));
             XYPlot xyPlot = chart.getXYPlot();
+            xyPlot.getRenderer().setSeriesItemLabelsVisible(0, false);
             ValueAxis domainAxis = xyPlot.getDomainAxis();
             ValueAxis rangeAxis = xyPlot.getRangeAxis();
             Range domain = domainAxis.getRange();
-            double maxRange = getMaxWindForce(ship.getWindSpeeds());
+            //double maxRange = getMaxWindForce(ship.getWindSpeeds());
             rangeAxis.setUpperMargin(0.1);
             rangeAxis.setLowerMargin(0.1);
-            rangeAxis.setRange(-maxRange, maxRange);
+            //rangeAxis.setRange(-maxRange, maxRange);
             domainAxis.setUpperMargin(0.1);
             domainAxis.setLowerMargin(0.1);
             amendPDFDoc(1000, 800, chart);
@@ -201,7 +202,7 @@ public class OutputManager {
         }
         outputMonthlyAverages(ships);
 
-        writePDFDoc("ReportSample");
+        writePDFDoc(reportTitle.replaceAll(".xls", ""));
     }
 
     List<Pair<String, Double>> hsLongList = new ArrayList<>(), tpLongList = new ArrayList<>(), hsSwellList = new ArrayList<>(), tpSwellList = new ArrayList<>();

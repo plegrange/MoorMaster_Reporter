@@ -14,8 +14,10 @@ import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
 
 import java.io.File;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 
 public class WeatherController {
     private Button backButton, directoryButton, filterDateButton, filterShipButton, generateButton;
@@ -60,18 +62,15 @@ public class WeatherController {
             public void handle(ActionEvent event) {
                 outputManager = new OutputManager();
                 switch (option) {
-                    case "DATE":
+                    default:
                         reportName = startMonthPicker.getValue() + " " + startYearPicker.getValue() + " - " + endMonthPicker.getValue() + " " + endYearPicker.getValue() + ".xls";
                         break;
                     case "SHIP":
                         reportName = shipPicker.getValue() + ".xls";
                         break;
-                    default:
-                        reportName = "All.xls";
-                        break;
                 }
                 feedbackLabel.setText("Generating reports. Please wait...");
-                outputManager.generateReport(filteredList, reportName);
+                outputManager.generateReport(filteredList, "Weather Report " + reportName);
                 feedbackLabel.setText("Reports Generated!");
             }
         });
@@ -117,6 +116,7 @@ public class WeatherController {
                 primaryStage.setScene(waitScene);
                 primaryStage.show();
                 selectedDirectory = directoryChooser.showDialog(primaryStage);
+
                 if (selectedDirectory != null) {
                     directoryLabel.setText(selectedDirectory.getAbsolutePath());
                     //fileReader = new FileReader(selectedDirectory);
@@ -156,6 +156,10 @@ public class WeatherController {
                         }
                     });
                     service.start();
+                }else{
+                    primaryStage.hide();
+                    primaryStage.setScene(weatherScene);
+                    primaryStage.show();
                 }
             }
         });
@@ -170,8 +174,10 @@ public class WeatherController {
                     @Override
                     public int compare(Ship o1, Ship o2) {
                         if (o1.isBefore(o2))
+                            return -1;
+                        else if (o2.isBefore(o1))
                             return 1;
-                        return -1;
+                        else return 0;
                     }
                 });
             }
@@ -187,8 +193,10 @@ public class WeatherController {
                     @Override
                     public int compare(Ship o1, Ship o2) {
                         if (o1.isBefore(o2))
+                            return -1;
+                        else if (o2.isBefore(o1))
                             return 1;
-                        return -1;
+                        else return 0;
                     }
                 });
             }
@@ -200,14 +208,21 @@ public class WeatherController {
         ObservableList<String> monthIndex =
                 FXCollections.observableArrayList(
                         "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December");
-        startMonthPicker.setItems(monthIndex);
-        endMonthPicker.setItems(monthIndex);
+
         ObservableList<String> year = FXCollections.observableArrayList();
-        for (int i = 2000; i < 2050; i++) {
+        int thisYear = Calendar.getInstance().get(Calendar.YEAR);
+        int thisMonth = Calendar.getInstance().get(Calendar.MONTH);
+        for (int i = 2000; i <= thisYear; i++) {
             year.add(String.valueOf(i));
         }
+        startMonthPicker.setItems(monthIndex);
+        startMonthPicker.getSelectionModel().selectFirst();
+        endMonthPicker.setItems(monthIndex);
+        endMonthPicker.getSelectionModel().select(thisMonth);
         startYearPicker.setItems(year);
+        startYearPicker.getSelectionModel().selectFirst();
         endYearPicker.setItems(year);
+        endYearPicker.getSelectionModel().selectLast();
 
         ObservableList<String> ships = FXCollections.observableArrayList();
         for (int i = 0; i < mainList.size(); i++) {

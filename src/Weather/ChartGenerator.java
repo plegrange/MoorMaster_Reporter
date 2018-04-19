@@ -31,7 +31,7 @@ public class ChartGenerator implements ChartMouseListenerFX {
     }
 
     public JFreeChart createWindChart(String title, String xLabel, String yLabel, WindDataset windDataset) {
-        return ChartFactory.createWindPlot(title, xLabel, yLabel, windDataset, true, false, false);
+        return ChartFactory.createWindPlot(title, xLabel, yLabel, windDataset, true, true, false);
     }
 
     public JFreeChart createBarChart(String title, String xLabel, String yLabel, String subtitle) {

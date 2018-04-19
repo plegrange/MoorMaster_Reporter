@@ -164,6 +164,9 @@ public class Ship {
                 if (time[2].endsWith("PM")) {
                     if (Integer.valueOf(time[0]) < 12)
                         addPM = 12;
+                }if (time[2].endsWith("AM")) {
+                    if (Integer.valueOf(time[0]) >= 12)
+                        addPM = -12;
                 }
                 timeStamps.add(new Date(Integer.valueOf(date[2]),
                         Integer.valueOf(date[1]) - 1,
