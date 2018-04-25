@@ -15,6 +15,7 @@ import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
 
 import java.io.*;
+import java.util.Calendar;
 import java.util.List;
 
 public class EnergyController {
@@ -334,11 +335,17 @@ public class EnergyController {
         startMonthPicker.setItems(monthIndex);
         endMonthPicker.setItems(monthIndex);
         ObservableList<String> year = FXCollections.observableArrayList();
-        for (int i = 2000; i < 2050; i++) {
+        int thisYear = Calendar.getInstance().get(Calendar.YEAR);
+        int thisMonth = Calendar.getInstance().get(Calendar.MONTH);
+        for (int i = 2000; i <= thisYear; i++) {
             year.add(String.valueOf(i));
         }
         startYearPicker.setItems(year);
         endYearPicker.setItems(year);
+        startYearPicker.getSelectionModel().selectFirst();
+        endYearPicker.getSelectionModel().selectLast();
+        startMonthPicker.getSelectionModel().selectFirst();
+        endMonthPicker.getSelectionModel().select(thisMonth);
     }
 
     private void filter() {

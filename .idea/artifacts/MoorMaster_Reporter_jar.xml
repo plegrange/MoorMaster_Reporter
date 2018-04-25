@@ -1,0 +1,19 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="MoorMaster Reporter:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/MoorMaster_Reporter_jar</output-path>
+    <root id="archive" name="MoorMaster Reporter.jar">
+      <element id="module-output" name="MoorMaster Reporter" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/jxl.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/fxgraphics2d-1.6.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/google-collections-1.0.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/jfreechart-1.5.0.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/jfreechart-fx-1.0.0.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/jfreesvg-3.3.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/jsr305-2.0.1.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/orson-charts-fx-1.0.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/orsoncharts-1.7.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/orsonpdf-1.7.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/qdox-2.0-M7.jar" path-in-jar="/" />
+    </root>
+  </artifact>
+</component>

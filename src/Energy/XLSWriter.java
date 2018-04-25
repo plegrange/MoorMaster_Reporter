@@ -25,7 +25,7 @@ public class XLSWriter {
 
     public void writeWorkbook(List<Month> months, List<Pair<String, String[][]>> sheets) {
         this.months = months;
-        this.outputDataFile = months.get(0).getMonth() + months.get(0).getYear() + "-" + months.get(months.size() - 1).getMonth() + months.get(months.size() - 1).getYear() + ".xls";
+        this.outputDataFile = "Energy Report "+months.get(0).getMonth() +" "+ months.get(0).getYear() + " - " + months.get(months.size() - 1).getMonth() +" "+ months.get(months.size() - 1).getYear() + ".xls";
         File file = new File(outputDataFile);
         WorkbookSettings wbSettings = new WorkbookSettings();
         wbSettings.setLocale(new Locale("en", "EN"));

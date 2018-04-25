@@ -24,7 +24,7 @@ public class OutputManager {
 
     public void generateReport(List<Month> months, Stage stage, String startDate, String endDate) {
         List<Pair<String, Double>> setA = new ArrayList<>(), setB = new ArrayList<>(), setC = new ArrayList<>();
-        createPDFDoc("Report_" + months.get(0).getMonth() + "_" + months.get(0).getYear() + "-" + months.get(months.size() - 1).getMonth() + "_" + months.get(months.size() - 1).getYear(), "SimiusDev");
+        createPDFDoc("Energy Report " + months.get(0).getMonth() + " " + months.get(0).getYear() + " - " + months.get(months.size() - 1).getMonth() + " " + months.get(months.size() - 1).getYear(), "SimiusDev");
 
         chartGenerator = new ChartGenerator();
         //Chart 1
@@ -149,10 +149,10 @@ public class OutputManager {
         chart = chartGenerator.createPieChart("Total Energy Usage", subtitle, pieDataset);
         amendPDFDoc(700, 400, chart);
 
-        writePDFDoc("Report_" + months.get(0).getMonth() + "_" +
-                months.get(0).getYear() + "-" +
+        writePDFDoc("Energy Report " + months.get(0).getMonth() + " " +
+                months.get(0).getYear() + " - " +
                 months.get(months.size() - 1).getMonth() +
-                "_" + months.get(months.size() - 1).getYear());
+                " " + months.get(months.size() - 1).getYear());
 
         xlsWriter = new XLSWriter();
         xlsWriter.writeWorkbook(months, buildTables(months));
@@ -204,7 +204,7 @@ public class OutputManager {
         cumulativeTable[9][0] = "PoN Usage (kWh)";
         cumulativeTable[10][0] = "PoN Cost (Rands)";
 
-        for (int m = 0; m < months.size() - 1; m++) {
+        for (int m = 0; m < months.size(); m++) {
             Month month = months.get(m);
             month.calculateTotalMonthHours();
             for (int a = 0; a < month.getAttributes().size(); a++) {
@@ -228,7 +228,7 @@ public class OutputManager {
         for (int a = 1; a < month.getAttributes().size(); a++) {
             cumulativeTable[a + 12][1] = month.getAttributes().get(a);
         }
-        for (int m = 1; m < months.size() - 1; m++) {
+        for (int m = 1; m < months.size(); m++) {
             month = months.get(m);
             for (int a = 1; a < month.getAttributes().size(); a++) {
                 cumulativeTable[a + 12][m + 1] = add(cumulativeTable[a + 12][m], month.getAttributes().get(a));
@@ -262,11 +262,11 @@ public class OutputManager {
         cumulativeTable[29][1] = "0.0";
 
         for (Month m : months) {
-            cumulativeTable[27][1] = String.valueOf(Double.valueOf(month.getComboCost()) +
+            cumulativeTable[27][1] = String.valueOf(Double.valueOf(m.getComboCost()) +
                     Double.valueOf(cumulativeTable[27][1]));
-            cumulativeTable[28][1] = String.valueOf(Double.valueOf(month.getPoNCost()) +
+            cumulativeTable[28][1] = String.valueOf(Double.valueOf(m.getPoNCost()) +
                     Double.valueOf(cumulativeTable[28][1]));
-            cumulativeTable[29][1] = String.valueOf(Double.valueOf(month.getAMSCost()) +
+            cumulativeTable[29][1] = String.valueOf(Double.valueOf(m.getAMSCost()) +
                     Double.valueOf(cumulativeTable[29][1]));
         }
 
