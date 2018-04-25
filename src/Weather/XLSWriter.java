@@ -81,7 +81,7 @@ public class XLSWriter {
         for (int i = 0; i < ship.getWindSpeeds().size(); i++) {
             try {
                 Date timeStamp = ship.getTimeStamps().get(i);
-                String date = timeStamp.getDate() + "/" + timeStamp.getMonth() + "/" + timeStamp.getYear();
+                String date = timeStamp.getDate() + "/" + (timeStamp.getMonth()+1) + "/" + timeStamp.getYear();
                 String time = String.valueOf(timeStamp.getHours()) + "h " + String.valueOf(timeStamp.getMinutes()) + "m " + String.valueOf(timeStamp.getSeconds()) + "s";
                 addString(workbook.getSheet(sheet), 0, i + 1, date);
                 addString(workbook.getSheet(sheet), 1, i + 1, time);
