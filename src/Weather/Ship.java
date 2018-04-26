@@ -106,7 +106,7 @@ public class Ship {
     private double convertToBeaufort(int knots) {
         double beaufort;
         if (knots == 1)
-            beaufort = 0.1;
+            beaufort = 0;
         else if (knots > 1 && knots <= 3) {
             beaufort = 1;
         } else if (knots >= 4 && knots <= 6)
@@ -145,6 +145,7 @@ public class Ship {
             totalHSLong = totalHSLong + (Double.valueOf(entry[6]) + Double.valueOf(entry[12])) / 2.0;
             totalTPLong = totalTPLong + (Double.valueOf(entry[7]) + Double.valueOf(entry[13])) / 2.0;
             totalHSSwell = totalHSSwell + (Double.valueOf(entry[8]) + Double.valueOf(entry[14])) / 2.0;
+            totalTPSwell = totalTPSwell + (Double.valueOf(entry[9])+ Double.valueOf(entry[15])) / 2.0;
 
             splitTime = entry[1].split(":");
             if (Integer.valueOf(splitTime[0]) != hour) {
@@ -175,7 +176,7 @@ public class Ship {
                         Integer.valueOf(time[1]),
                         Integer.valueOf(time[2].replaceAll("PM", "").replaceAll("AM", ""))));
 
-                totalTPSwell = totalTPSwell + (Double.valueOf(entry[9]) + Double.valueOf(entry[15])) / 2.0;
+                //totalTPSwell = totalTPSwell + (Double.valueOf(entry[9]) + Double.valueOf(entry[15])) / 2.0;
             }
         }
         windSpeedAverage = totalWind / entries.size();

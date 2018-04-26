@@ -104,7 +104,7 @@ public class OutputManager {
                     for (int i = 0; i < dates.size(); i++) {
                         Date date = dates.get(i);
                         if (m.isSameMonth(new Month(date.getMonth(), date.getYear()))) {
-                            if (date.getDate() + 1 == day) {
+                            if (date.getDate() == day) {
                                 hsLongTotal = hsLongTotal + ship.getHsLong().get(i);
                                 tpLongTotal = tpLongTotal + ship.getTpLong().get(i);
                                 hsSwellTotal = hsSwellTotal + ship.getHsSwell().get(i);
@@ -116,15 +116,15 @@ public class OutputManager {
                     }
                 }
                 if (found) {
-                    monthlyAverages = addToLists(monthlyAverages, new Pair<>(String.valueOf(day), hsLongTotal / (counter * 1.0)), 0, day);
-                    monthlyAverages = addToLists(monthlyAverages, new Pair<>(String.valueOf(day), tpLongTotal / (counter * 1.0)), 1, day);
-                    monthlyAverages = addToLists(monthlyAverages, new Pair<>(String.valueOf(day), hsSwellTotal / (counter * 1.0)), 2, day);
-                    monthlyAverages = addToLists(monthlyAverages, new Pair<>(String.valueOf(day), tpSwellTotal / (counter * 1.0)), 3, day);
+                    monthlyAverages = addToLists(monthlyAverages, new Pair<>(String.valueOf(day), hsLongTotal / (counter * 1.0)), 0, day+1);
+                    monthlyAverages = addToLists(monthlyAverages, new Pair<>(String.valueOf(day), tpLongTotal / (counter * 1.0)), 1, day+1);
+                    monthlyAverages = addToLists(monthlyAverages, new Pair<>(String.valueOf(day), hsSwellTotal / (counter * 1.0)), 2, day+1);
+                    monthlyAverages = addToLists(monthlyAverages, new Pair<>(String.valueOf(day), tpSwellTotal / (counter * 1.0)), 3, day+1);
                 } else {
-                    monthlyAverages = addToLists(monthlyAverages, null, 0, day);
-                    monthlyAverages = addToLists(monthlyAverages, null, 1, day);
-                    monthlyAverages = addToLists(monthlyAverages, null, 2, day);
-                    monthlyAverages = addToLists(monthlyAverages, null, 3, day);
+                    monthlyAverages = addToLists(monthlyAverages, null, 0, day+1);
+                    monthlyAverages = addToLists(monthlyAverages, null, 1, day+1);
+                    monthlyAverages = addToLists(monthlyAverages, null, 2, day+1);
+                    monthlyAverages = addToLists(monthlyAverages, null, 3, day+1);
                 }
             }
             chartGenerator.resetData();
@@ -191,10 +191,10 @@ public class OutputManager {
             ValueAxis domainAxis = xyPlot.getDomainAxis();
             ValueAxis rangeAxis = xyPlot.getRangeAxis();
             Range domain = domainAxis.getRange();
-            //double maxRange = getMaxWindForce(ship.getWindSpeeds());
+            double maxRange = getMaxWindForce(ship.getWindSpeeds());
             rangeAxis.setUpperMargin(0.1);
             rangeAxis.setLowerMargin(0.1);
-            //rangeAxis.setRange(-maxRange, maxRange);
+            rangeAxis.setRange(-maxRange, maxRange);
             domainAxis.setUpperMargin(0.1);
             domainAxis.setLowerMargin(0.1);
             amendPDFDoc(1000, 800, chart);
